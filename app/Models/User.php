@@ -10,7 +10,9 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +23,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'membership',
+        'role'
     ];
 
     /**
@@ -32,6 +36,21 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function trip()
+    {
+        return $this->belongsToMany(
+            Trip::class,
+            'user_trip',
+            'user_id',
+            'trip_id'
+        );
+    }
+
+    public function membership()
+    {
+        return $this->belongsTo(Membership::class);
+    }
 
     /**
      * The attributes that should be cast.
