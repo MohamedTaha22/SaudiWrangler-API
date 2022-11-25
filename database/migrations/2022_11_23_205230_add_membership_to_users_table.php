@@ -13,8 +13,8 @@ return new class () extends Migration {
     public function up()
     {
         Schema::table('users', function ($table) {
-            $table->unsignedBigInteger('membership');
-            $table->foreign('membership')->references('id')->on('memberships')->default(1);
+            $table->unsignedBigInteger('membership_id');
+            $table->foreign('membership_id')->references('id')->on('memberships')->default(1);
         });
     }
 

@@ -10,7 +10,7 @@ class AdminController extends Controller
 {
     public function userIndex()
     {
-        $users= User::with("membership")->get();
+        $users= User::with("membership")->where('role','user')->get();
         return $users;
     }
 
