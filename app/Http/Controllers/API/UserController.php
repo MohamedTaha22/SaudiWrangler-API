@@ -5,37 +5,42 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function show($id)
+    public function show()
     {
-        $user = User::find($id);
+        $auth = Auth::user();
+        $user = User::with("membership")->where('id', $auth->id)->get();
         return $user;
     }
 
-    public function updateMembership($userId)
+    public function updateMembership()
     {
-        $user = User::find($userId);
+        $auth = Auth::user();
+        $user = User::find($auth->id);
         $data = request()->all();
         $user->membership_id = $data['membership_id'];
         $user->save();
-        return $user;
+        return $user->membership;
     }
 
-    public function addTrip($userId)
+    public function addTrip()
     {
-        $user = User::find($userId);
+        $auth = Auth::user();
+        $user = User::find($auth->id);
         $data = request()->all();
         $user->trip()->attach($data['trip_id']);
-        return $user;
+        return $user->trip;
     }
 
-    public function removeTrip($userId)
+    public function removeTrip()
     {
-        $user = User::find($userId);
+        $auth = Auth::user();
+        $user = User::find($auth->id);
         $data = request()->all();
         $user->trip()->detach($data['trip_id']);
-        return $user;
+        return $user->trip;
     }
 }

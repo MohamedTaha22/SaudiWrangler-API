@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AdminController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\MembershipController;
 use App\Http\Controllers\API\TripController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,3 +46,11 @@ Route::get('/memberships/{id}', [MembershipController::class,'show']);
 
 Route::get('/trips', [TripController::class,'index']);
 Route::get('/trips/{id}', [TripController::class,'show']);
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/user', [UserController::class,'show']);
+    Route::post('/user/trip', [UserController::class,'addTrip']);
+    Route::delete('/user/trip', [UserController::class,'removeTrip']);
+    Route::put('/user/membership', [UserController::class,'updateMembership']);
+});
